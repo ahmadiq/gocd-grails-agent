@@ -21,7 +21,7 @@ RUN echo 'deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main' >> /
     rm -rf /var/cache/oracle-jdk${JAVA_VER}-installer
 
 # Download Install utilities
-RUN apt-get update && apt-get install -y -q unzip wget git
+RUN apt-get update && apt-get install -y -q unzip wget curl git
 
 # Install Grails
 WORKDIR /usr/lib/jvm
@@ -40,8 +40,9 @@ ADD gocd-agent/go-agent-start.sh /etc/service/go-agent/run
 ADD http://download.go.cd/gocd-deb/go-agent-15.1.0-1863.deb /tmp/go-agent.deb
 
 WORKDIR /tmp
-RUN dpkg -i /tmp/go-agent.deb
-RUN sed -i -e 's/DAEMON=Y/DAEMON=N/' /etc/default/go-agent /etc/default/go-agent
+RUN dpkg -i /tmp/go-agent.deb && \
+    sed -i -e 's/DAEMON=Y/DAEMON=N/' /etc/default/go-agent /etc/default/go-agent
+RUN curl -sSL https://get.docker.io/ubuntu/ | sh
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
