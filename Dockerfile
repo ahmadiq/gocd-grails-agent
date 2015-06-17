@@ -46,6 +46,7 @@ RUN curl -sSL https://get.docker.io/ubuntu/ | sh
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+COPY docker /etc/default/docker
 COPY sudoers /etc/sudoers.d/sudoers
 
 CMD ["/sbin/my_init"]
